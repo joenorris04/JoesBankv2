@@ -2,23 +2,44 @@
 #include <iostream>
 #include <string>
 
+bool Account::checkNameValidity(std::string inputName) {
+	int nameLength;
+	for (int i = 0; inputName[i] != '\0'; i++) {
+			bool x = isspace(inputName[i]);
+			if (x == 1) {
+				return 0;
+			}
+		
+	}
+	return 1;
+}
+
 
 void Account::getUserDetails() {
-	/*
-	add checks for password length
-	*/
-	std::string inputFullName;
+	std::string firstName;
+	std::string secondName;
 	std::string inputPassword1;
 	std::string inputPassword2;
 	int passwordLength;
+	bool x;
+	bool y;
 	std::cout << "Please enter your age: ";
 	std::cin >> age;
 	if (age < 18) {
 		std::cout << "You are not old enough to create an account!";
 	}
 	else {
-		std::cout << "Please enter your full name: ";
-		std::getline(std::cin >> std::ws, inputFullName); // need to create function to split into first, middle and last name
+		do {
+			std::cout << "Please enter your first name with no spaces: ";
+			std::getline(std::cin >> std::ws, firstName);
+			x = checkNameValidity(firstName);
+		} while (x == 0);
+		do {
+			std::cout << "Please enter your second name with no spaces: ";
+			std::getline(std::cin >> std::ws, secondName);
+			y = checkNameValidity(secondName);
+		} while (y == 0);
+
 		std::cout << "Please enter your postcode: ";
 		std::getline(std::cin >> std::ws, postcode);
 		do {
@@ -31,7 +52,6 @@ void Account::getUserDetails() {
 			std::cin >> inputPassword2;
 			if (inputPassword1 == inputPassword2) {
 				password = inputPassword1;
-				std::cout << password;
 			}
 			else {
 				std::cout << "Your passwords do not match.\n";
@@ -39,6 +59,7 @@ void Account::getUserDetails() {
 		} while (inputPassword1 != inputPassword2);
 	}
 }
+
 
 void Account::login() {
 	std::cout << "I am logging in.";

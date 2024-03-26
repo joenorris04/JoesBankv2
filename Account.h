@@ -5,6 +5,7 @@ class Account {
 public:
 	void getUserDetails();
 	void login();
+	bool checkNameValidity(std::string inputName);
 
 private:
 	std::string firstName;
