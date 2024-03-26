@@ -41,5 +41,5 @@ void Account::getUserDetails() {
 }
 
 void Account::login() {
-	std::cout << "I am logging in!";
+	std::cout << "I am logging in.";
 }
