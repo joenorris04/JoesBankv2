@@ -4,10 +4,12 @@
 class Account {
 public:
 	void getUserDetails();
+	uint32_t generateAccountNumber();
 	void login();
 	bool checkFirstNameValidity(std::string inputName);
 	bool checkSecondNameValidity(std::string inputName);
 	bool checkPasswordValidity(std::string inputPassword);
+
 
 private:
 	std::string firstName;

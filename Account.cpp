@@ -1,6 +1,23 @@
 #include "Account.h"
 #include <iostream>
 #include <string>
+#include <ctime>
+
+uint32_t Account::generateAccountNumber() { // add checks to ensure the number hasnt been used before
+
+	uint32_t accountNumber;
+
+	srand(time(NULL));
+	std::string randomNumber1 = std::to_string(rand() & 9000 + 1000);
+
+	srand(time(NULL) + 82735983); // maybe a better way to do this?
+	std::string randomNumber2 = std::to_string(rand() & 9000 + 1000);
+	
+	std::string strAccountNumber = randomNumber1 + randomNumber2;
+	accountNumber = stoi(strAccountNumber);
+
+	return accountNumber;
+}
 
 bool Account::checkPasswordValidity(std::string inputPassword) {
 	int passwordLength = inputPassword.length();
@@ -21,7 +38,6 @@ bool Account::checkPasswordValidity(std::string inputPassword) {
 }
 
 bool Account::checkFirstNameValidity(std::string inputName) {
-	int nameLength;
 	for (int i = 0; inputName[i] != '\0'; i++) {
 			bool x = isspace(inputName[i]);
 			if (x == 1) {
@@ -34,7 +50,6 @@ bool Account::checkFirstNameValidity(std::string inputName) {
 }
 
 bool Account::checkSecondNameValidity(std::string inputName) {
-	int nameLength;
 	for (int i = 0; inputName[i] != '\0'; i++) {
 		bool x = isspace(inputName[i]);
 		if (x == 1) {
@@ -46,34 +61,35 @@ bool Account::checkSecondNameValidity(std::string inputName) {
 	return 1;
 }
 
-
 void Account::getUserDetails() {
-	std::string firstName;
-	std::string secondName;
+	std::string inputFirstName;
+	std::string inputSecondName;
 	std::string inputPassword1;
 	std::string inputPassword2;
+	std::string inputPostcode;
+	int inputAge;
 	bool passwordValidity;
 	bool x;
 	bool y;
 	std::cout << "Please enter your age: ";
-	std::cin >> age;
-	if (age < 18) {
+	std::cin >> inputAge;
+	if (inputAge < 18) {
 		std::cout << "You are not old enough to create an account!";
 	}
 	else {
 		do {
 			std::cout << "Please enter your first name: ";
-			std::getline(std::cin >> std::ws, firstName);
-			x = checkFirstNameValidity(firstName);
+			std::getline(std::cin >> std::ws, inputFirstName);
+			x = checkFirstNameValidity(inputFirstName);
 		} while (x == 0);
 		do {
 			std::cout << "Please enter your second name: ";
-			std::getline(std::cin >> std::ws, secondName);
-			y = checkSecondNameValidity(secondName);
+			std::getline(std::cin >> std::ws, inputSecondName);
+			y = checkSecondNameValidity(inputSecondName);
 		} while (y == 0);
 
 		std::cout << "Please enter your postcode: ";
-		std::getline(std::cin >> std::ws, postcode);
+		std::getline(std::cin >> std::ws, inputPostcode);
 		do {
 			do {
 				std::cout << "Please enter a password: ";
@@ -89,6 +105,13 @@ void Account::getUserDetails() {
 				std::cout << "Your passwords do not match.\n";
 			}
 		} while (inputPassword1 != inputPassword2);
+		firstName = inputFirstName;
+		secondName = inputSecondName;
+		age = inputAge;
+		postcode = inputPostcode;
+		accountNumber = generateAccountNumber();
+		std::cout << "Below is your new account number. Please do not forget this!\n";
+		std::cout << accountNumber;
 	}
 }
 
