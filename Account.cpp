@@ -20,7 +20,7 @@ bool Account::checkPasswordValidity(std::string inputPassword) {
 	return 0;
 }
 
-bool Account::checkNameValidity(std::string inputName) {
+bool Account::checkFirstNameValidity(std::string inputName) {
 	int nameLength;
 	for (int i = 0; inputName[i] != '\0'; i++) {
 			bool x = isspace(inputName[i]);
@@ -29,6 +29,19 @@ bool Account::checkNameValidity(std::string inputName) {
 				return 0;
 			}
 		
+	}
+	return 1;
+}
+
+bool Account::checkSecondNameValidity(std::string inputName) {
+	int nameLength;
+	for (int i = 0; inputName[i] != '\0'; i++) {
+		bool x = isspace(inputName[i]);
+		if (x == 1) {
+			std::cout << "Ensure you only enter your second name with no spaces.\n";
+			return 0;
+		}
+
 	}
 	return 1;
 }
@@ -51,12 +64,12 @@ void Account::getUserDetails() {
 		do {
 			std::cout << "Please enter your first name: ";
 			std::getline(std::cin >> std::ws, firstName);
-			x = checkNameValidity(firstName);
+			x = checkFirstNameValidity(firstName);
 		} while (x == 0);
 		do {
 			std::cout << "Please enter your second name: ";
 			std::getline(std::cin >> std::ws, secondName);
-			y = checkNameValidity(secondName);
+			y = checkSecondNameValidity(secondName);
 		} while (y == 0);
 
 		std::cout << "Please enter your postcode: ";
