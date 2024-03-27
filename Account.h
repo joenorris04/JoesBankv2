@@ -6,6 +6,7 @@ public:
 	void getUserDetails();
 	void login();
 	bool checkNameValidity(std::string inputName);
+	bool checkPasswordValidity(std::string inputPassword);
 
 private:
 	std::string firstName;

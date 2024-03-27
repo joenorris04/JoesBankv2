@@ -17,6 +17,9 @@ int main() {
 		Account account;
 		account.login();
 	}
+	else {
+		std::cout << "Thank you for using Joe's Bank!";
+	}
 
 	return 0;
 }
