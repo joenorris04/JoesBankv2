@@ -4,7 +4,7 @@
 class Account {
 public:
 	void getUserDetails();
-	uint32_t generateAccountNumber();
+	std::string generateAccountNumber();
 	void login();
 	bool checkFirstNameValidity(std::string inputName);
 	bool checkSecondNameValidity(std::string inputName);
@@ -17,6 +17,6 @@ private:
 	int age;
 	std::string postcode;
 	std::string password;
-	uint32_t accountNumber;
+	std::string accountNumber;
 
 };
