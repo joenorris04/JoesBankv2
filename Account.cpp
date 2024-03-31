@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <fstream>
 
 std::string Account::generateAccountNumber() { // add checks to ensure the number hasnt been used before - 16 digit
 
@@ -19,7 +20,7 @@ std::string Account::generateAccountNumber() { // add checks to ensure the numbe
 	int num4 = (num3 * num3) % 9000 + 1000;
 	std::string strNum4 = std::to_string(num4);
 
-	std::string strAccountNumber = strNum1 + strNum2 + strNum3 + strNum4;
+	std::string strAccountNumber = strNum1 + "-" + strNum2 + "-" + strNum3 + "-" + strNum4;
 
 	return strAccountNumber;
 }
@@ -109,7 +110,7 @@ void Account::getUserDetails() {
 				passwordValidity = checkPasswordValidity(inputPassword1);
 			} while (passwordValidity == 0);
 			std::cout << "Please confirm your password: ";
-			std::cin >> inputPassword2;
+			std::getline(std::cin >> std::ws, inputPassword2);
 			if (inputPassword1 == inputPassword2) {
 				password = inputPassword1;
 			}
@@ -127,7 +128,20 @@ void Account::getUserDetails() {
 	}
 }
 
+void Account::saveUserDetails(std::string firstName, std::string secondName, int age, std::string postcode,std::string password, std::string accountNumber) {
+	std::fstream myFile;
+	myFile.open("Accounts.txt", std::ios::app);
+	if (myFile.is_open()) {
+		myFile << accountNumber << "    " << firstName << "    " << secondName << "    " << age << "    " << postcode << "    " << password << '\n';
+		myFile.close();
+	}
+}
+
 
 void Account::login() {
-	std::cout << "I am logging in.";
+	std::cout << "Please enter the first four digits of your account number."
+}
+
+int Account::randNumGenerator() {
+
 }

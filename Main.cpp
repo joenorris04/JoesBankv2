@@ -11,6 +11,7 @@ int main() {
 	if (intUserChoice == 1) {
 		Account account;
 		account.getUserDetails();
+		account.saveUserDetails(account.firstName, account.secondName, account.age, account.postcode, account.password, account.accountNumber);
 	}
 	else if (intUserChoice == 2) {
 		Account account;
