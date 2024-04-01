@@ -99,20 +99,43 @@ bool Account::checkSecondNameValidity(std::string inputName) {
 	return 1;
 }
 
-void Account::getUserDetails() {
+bool Account::getUserDetails() {
 	std::string inputFirstName;
 	std::string inputSecondName;
 	std::string inputPassword1;
 	std::string inputPassword2;
 	std::string inputPostcode;
-	int inputAge;
+	std::string inputAge;
+	int intInputAge;
 	bool passwordValidity;
+	bool ageValidity = 1;
 	bool x;
 	bool y;
-	std::cout << "Please enter your age: ";
-	std::cin >> inputAge;
-	if (inputAge < 18) {
-		std::cout << "You are not old enough to create an account!";
+	do {
+		std::cout << "Please enter your age: ";
+		std::getline(std::cin >> std::ws, inputAge);
+		for (int i = 0; i < inputAge.length(); i++) {
+			if (inputAge[i] == ' ') {
+				inputAge.erase(i, 1);
+				i--; // if a space is erased we must decrement i by 1 as the length of the string has been reduced
+			}
+
+		}
+		for (int i = 0; i < inputAge.length(); i++) {
+			if (!isdigit(inputAge[i])) {
+				ageValidity = 0;
+				std::cout << "Your age should be written as a number.\n";
+				break;
+			}
+			else {
+				ageValidity = 1;
+			}
+		}
+	} while (ageValidity == 0);
+	intInputAge = stoi(inputAge);
+	if (intInputAge < 18) {
+		std::cout << "You are not old enough to create an account!\n";
+		return 0;
 	}
 	else {
 		do {
@@ -128,6 +151,12 @@ void Account::getUserDetails() {
 
 		std::cout << "Please enter your postcode: ";
 		std::getline(std::cin >> std::ws, inputPostcode);
+		for (int i = 0; i < inputPostcode.length(); i++) {
+			if (inputPostcode[i] == ' ') {
+				inputPostcode.erase(i, 1);
+			}
+			
+		}
 		do {
 			do {
 				std::cout << "Please enter a password: ";
@@ -145,11 +174,12 @@ void Account::getUserDetails() {
 		} while (inputPassword1 != inputPassword2);
 		firstName = inputFirstName;
 		secondName = inputSecondName;
-		age = inputAge;
+		age = intInputAge;
 		postcode = inputPostcode;
 		accountNumber = generateAccountNumber();
 		std::cout << "Below is your new account number. Please do not forget this!\n";
 		std::cout << accountNumber << '\n';
+		return 1;
 	}
 }
 

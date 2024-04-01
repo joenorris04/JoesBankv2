@@ -6,14 +6,16 @@
 int main() {
 
 	bool returnToHomescreen = 0;
+
 	do {
 		std::string userChoice = homeScreen();
 		int intUserChoice = stoi(userChoice);
 
 		if (intUserChoice == 1) {
 			Account account;
-			account.getUserDetails();
-			account.saveUserDetails(account.firstName, account.secondName, account.age, account.postcode, account.password, account.accountNumber);
+			if (account.getUserDetails()) {
+				account.saveUserDetails(account.firstName, account.secondName, account.age, account.postcode, account.password, account.accountNumber);
+			}
 			returnToHomescreen = 1;
 		}
 		else if (intUserChoice == 2) {
@@ -27,6 +29,7 @@ int main() {
 		}
 		else {
 			std::cout << "Thank you for using Joe's Bank!";
+			break;
 		}
 	} while (returnToHomescreen == 1);
 
