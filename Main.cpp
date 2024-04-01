@@ -21,7 +21,8 @@ int main() {
 		else if (intUserChoice == 2) {
 			Account account;
 			if (account.login()) {
-
+				account.loadAccount(account.accountDetails);
+				account.accountActions();
 			}
 			else {
 				returnToHomescreen = 1;

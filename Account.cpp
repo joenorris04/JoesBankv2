@@ -192,16 +192,12 @@ void Account::saveUserDetails(std::string firstName, std::string secondName, int
 	}
 }
 
-
 bool Account::login() {
-	int lengthOfAccountDetails;
 	int posOfAccountDetails;
 	int matchingChars;
-	int lengthOfPassword = 0;
 	uint32_t accountsSearched = 0;
 	std::string inputPassword;
 	std::string inputAccountNumber;
-	std::string accountDetails;
 	bool accountNumberValidity = false;
 	Account account;
 	do {
@@ -226,9 +222,12 @@ bool Account::login() {
 
 				}
 				accountsSearched++;
-				if (accountsSearched == numberOfAccounts) {
-					std::cout << "Your account number was not recognised.\n";
-					return 0;
+				if (matchingChars != 19) {
+					if (accountsSearched == numberOfAccounts) {
+						std::cout << "Your account number was not recognised.\n";
+						myFile.close();
+						return 0;
+					}
 				}
 
 			} while (matchingChars < 19);
@@ -269,6 +268,43 @@ bool Account::login() {
 			std::cout << "Failed to open file.\n";
 			return 0;
 		}
+}
+
+void Account::loadAccount(std::string accountDetails) {
+	// password is already stored in memory
+	accountNumber = accountDetails.substr(0, 19);
+
+	int lengthOfFirstName = 0;
+	for (int i = 23; accountDetails[i] != ' '; i++) {
+		lengthOfFirstName++;
+	}
+	firstName = accountDetails.substr(23, lengthOfFirstName);
+
+	int startPosSecondName = 27 + lengthOfFirstName;
+	int lengthOfSecondName = 0;
+	for (int i = startPosSecondName; accountDetails[i] != ' '; i++) {
+		lengthOfSecondName++;
+	}
+	secondName = accountDetails.substr(startPosSecondName, lengthOfSecondName);
+
+	int startPosAge = startPosSecondName + lengthOfSecondName + 4;
+	int lengthOfAge = 0;
+	for (int i = startPosAge; accountDetails[i] != ' '; i++) {
+		lengthOfAge++;
+	}
+	age = stoi(accountDetails.substr(startPosAge, lengthOfAge));
+
+	int startPosPostcode = startPosAge + lengthOfAge + 4;
+	int lengthOfPostcode = 0;
+	for (int i = startPosPostcode; accountDetails[i] != ' '; i++) {
+		lengthOfPostcode++;
+	}
+	postcode = accountDetails.substr(startPosPostcode, lengthOfPostcode);
+	
+}
+
+void Account::accountActions() {
+
 }
 
 
