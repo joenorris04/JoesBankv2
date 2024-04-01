@@ -4,6 +4,8 @@
 #include <ctime>
 #include <fstream>
 
+#define MAX_ACCOUNTS 100 //can be changed to allow for more users
+
 uint32_t Account::numberOfAccounts() {
 	uint32_t numberOfAccounts = 0;
 	std::string account;
@@ -222,6 +224,7 @@ bool Account::login() {
 
 				}
 				accountsSearched++;
+				accountIndex = accountsSearched;
 				if (matchingChars != 19) {
 					if (accountsSearched == numberOfAccounts) {
 						std::cout << "Your account number was not recognised.\n";
@@ -303,8 +306,61 @@ void Account::loadAccount(std::string accountDetails) {
 	
 }
 
-void Account::accountActions() {
-
+int Account::accountActions() {
+	std::string x;
+	std::cout << "Account: " << accountNumber << '\n';
+	std::cout << "Balance: " << balance << '\n';
+	std::cout << "Would you like to:\n";
+	do {
+		std::cout << "(1) Deposit money.\n";
+		std::cout << "(2) Withdraw money.\n";
+		std::cout << "(3) Change account details.\n";
+		std::cout << "(4) Delete account.\n";
+		std::cout << "(5) Log out.\n";
+		std::cin >> x;
+		if (x != "1" && x != "2" && x != "3" && x != "4" && x != "5") {
+			std::cout << "Please choose an option by entering one of the numbers shown within brackets.\n";
+		}
+	} while (x != "1" && x != "2" && x != "3" && x != "4" && x != "5");
+	return stoi(x);
 }
+
+bool Account::deleteAccount() {
+	Account account;
+	std::string deleteConfirmation;
+	std::cout << "Please confirm you would like to delete your account by typing the following text identically:\n";
+	std::cout << "DELETE ACCOUNT\n";
+	getline(std::cin >> std::ws, deleteConfirmation);
+	if (deleteConfirmation == "DELETE ACCOUNT") {
+		std::string line[MAX_ACCOUNTS];//declared as 100 at top of file
+		std::string deleteAccount;
+		uint32_t numberOfAccounts = account.numberOfAccounts();
+		std::fstream myFile;
+		myFile.open("Accounts.txt", std::ios::in);
+		if (myFile.is_open()) {
+			for (int i = 1; i <= numberOfAccounts; i++) {
+				getline(myFile, line[i]);
+			}
+			myFile.close();
+		}
+		myFile.open("Accounts.txt", std::ios::out);
+		if (myFile.is_open()) {
+			for (int i = 1; i <= numberOfAccounts; i++) {
+				if (i != accountIndex) {
+					myFile << line[i] << '\n';
+				}
+			}
+			myFile.close();
+		}
+		else {
+			std::cout << "Failed to open file.";
+		}
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
 
 
