@@ -111,8 +111,8 @@ bool Account::getUserDetails() {
 	int intInputAge;
 	bool passwordValidity;
 	bool ageValidity = 1;
-	bool x;
-	bool y;
+	bool firstNameValidity;
+	bool secondNameValidity;
 	do {
 		std::cout << "Please enter your age: ";
 		std::getline(std::cin >> std::ws, inputAge);
@@ -143,13 +143,13 @@ bool Account::getUserDetails() {
 		do {
 			std::cout << "Please enter your first name: ";
 			std::getline(std::cin >> std::ws, inputFirstName);
-			x = checkFirstNameValidity(inputFirstName);
-		} while (x == 0);
+			firstNameValidity = checkFirstNameValidity(inputFirstName);
+		} while (firstNameValidity == 0);
 		do {
 			std::cout << "Please enter your second name: ";
 			std::getline(std::cin >> std::ws, inputSecondName);
-			y = checkSecondNameValidity(inputSecondName);
-		} while (y == 0);
+			secondNameValidity = checkSecondNameValidity(inputSecondName);
+		} while (secondNameValidity == 0);
 
 		std::cout << "Please enter your postcode: ";
 		std::getline(std::cin >> std::ws, inputPostcode);
@@ -275,30 +275,31 @@ bool Account::login() {
 
 void Account::loadAccount(std::string accountDetails) {
 	// password is already stored in memory
+	Account account;
 	accountNumber = accountDetails.substr(0, 19);
 
-	int lengthOfFirstName = 0;
+	lengthOfFirstName = 0;
 	for (int i = 23; accountDetails[i] != ' '; i++) {
 		lengthOfFirstName++;
 	}
 	firstName = accountDetails.substr(23, lengthOfFirstName);
 
-	int startPosSecondName = 27 + lengthOfFirstName;
-	int lengthOfSecondName = 0;
+	startPosSecondName = 27 + lengthOfFirstName;
+	lengthOfSecondName = 0;
 	for (int i = startPosSecondName; accountDetails[i] != ' '; i++) {
 		lengthOfSecondName++;
 	}
 	secondName = accountDetails.substr(startPosSecondName, lengthOfSecondName);
 
-	int startPosAge = startPosSecondName + lengthOfSecondName + 4;
-	int lengthOfAge = 0;
+	startPosAge = startPosSecondName + lengthOfSecondName + 4;
+	lengthOfAge = 0;
 	for (int i = startPosAge; accountDetails[i] != ' '; i++) {
 		lengthOfAge++;
 	}
 	age = stoi(accountDetails.substr(startPosAge, lengthOfAge));
 
-	int startPosPostcode = startPosAge + lengthOfAge + 4;
-	int lengthOfPostcode = 0;
+	startPosPostcode = startPosAge + lengthOfAge + 4;
+	lengthOfPostcode = 0;
 	for (int i = startPosPostcode; accountDetails[i] != ' '; i++) {
 		lengthOfPostcode++;
 	}

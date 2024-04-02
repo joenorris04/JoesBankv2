@@ -11,6 +11,14 @@ public:
 	std::string accountDetails;
 	int lengthOfAccountDetails;
 	int lengthOfPassword = 0;
+	int startPosFirstName = 23;
+	int lengthOfFirstName;
+	int startPosSecondName;
+	int lengthOfSecondName;
+	int startPosAge;
+	int lengthOfAge;
+	int startPosPostcode;
+	int lengthOfPostcode;
 	std::string accountNumber;
 	int64_t balance = 0;
 	uint32_t accountIndex;
