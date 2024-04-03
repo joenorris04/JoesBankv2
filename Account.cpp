@@ -309,8 +309,19 @@ void Account::loadAccount(std::string accountDetails) {
 
 int Account::accountActions() {
 	std::string x;
-	std::cout << "Account: " << accountNumber << '\n';
-	std::cout << "Balance: " << balance << '\n';
+	std::cout << " _________________\n";
+	std::cout << "|     .:==:.      | Account Number: " << accountNumber << '\n';
+	std::cout << "|   .*@+--+%*.    |\n"; 
+	std::cout << "|   +%      %*.   | Balance: " << balance << '\n';
+	std::cout << "|   **      **.   |\n"; 
+	std::cout << "|   -@-.  .-@-    | First Name: " << firstName << '\n';
+	std::cout << "|     -@@@@+      |\n"; 
+	std::cout << "|   -#@@@@@@#=.   | Second Name: " << secondName << '\n';
+	std::cout << "|.-@+.      .=@-. |\n"; 
+	std::cout << "|.%:          :@: | Age: " << age << '\n';
+	std::cout << "|:@::::::::::::@- |\n";
+	std::cout << "|.==============: | Postcode: " << postcode << '\n';
+	std::cout << "|_________________|" << '\n' << '\n';
 	std::cout << "Would you like to:\n";
 	do {
 		std::cout << "(1) Deposit money.\n";
@@ -358,6 +369,3 @@ bool Account::deleteAccount(std::string deleteConfirmation) {
 		return 0;
 	}
 }
-
-
-
