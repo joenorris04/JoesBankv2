@@ -33,6 +33,6 @@ public:
 	bool checkAccountNumberValidity(std::string inputAccountNumber);
 	void loadAccount(std::string accountDetails);
 	int accountActions();
-	bool deleteAccount();
+	bool deleteAccount(std::string deleteConfirmation);
 };
 

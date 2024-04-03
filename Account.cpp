@@ -326,12 +326,8 @@ int Account::accountActions() {
 	return stoi(x);
 }
 
-bool Account::deleteAccount() {
+bool Account::deleteAccount(std::string deleteConfirmation) {
 	Account account;
-	std::string deleteConfirmation;
-	std::cout << "Please confirm you would like to delete your account by typing the following text identically:\n";
-	std::cout << "DELETE ACCOUNT\n";
-	getline(std::cin >> std::ws, deleteConfirmation);
 	if (deleteConfirmation == "DELETE ACCOUNT") {
 		std::string line[MAX_ACCOUNTS];//declared as 100 at top of file
 		std::string deleteAccount;
