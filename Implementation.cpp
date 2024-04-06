@@ -3,14 +3,14 @@
 #include "Header.h"
 
 
-bool firstLogin = 1;
+bool firstUse = 1;
 
 std::string homeScreen() {
 	std::string x;
-	if (firstLogin) {
+	if (firstUse) {
 		std::cout << "Welcome to Joe's Bank. ";
 		std::cout << "Please choose an option below.\n";
-		firstLogin = 0;
+		firstUse = 0;
 	}
 	do {
 		std::cout << "(1) Create a new account.\n";

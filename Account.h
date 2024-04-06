@@ -23,6 +23,7 @@ public:
 	int64_t balance = 0;
 	uint32_t accountIndex;
 	uint32_t numberOfAccounts();
+	bool firstLogin = 1;
 	bool getUserDetails();
 	std::string generateAccountNumber();
 	bool login();
@@ -34,5 +35,6 @@ public:
 	void loadAccount(std::string accountDetails);
 	int accountActions();
 	bool deleteAccount(std::string deleteConfirmation);
+	bool changeDetails();
 };
 
