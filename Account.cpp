@@ -406,7 +406,7 @@ bool Account::changeDetails() {
 		deleteAccount("DELETE ACCOUNT");
 		myFile.open("Accounts.txt", std::ios::app);
 		if (myFile.is_open()) {
-			myFile << newAccountDetails;
+			myFile << newAccountDetails << '\n';
 			myFile.close();
 			std::cout << "Your first name has been successfully changed.\n";
 			return 1;
@@ -433,7 +433,7 @@ bool Account::changeDetails() {
 		deleteAccount("DELETE ACCOUNT");
 		myFile.open("Accounts.txt", std::ios::app);
 		if (myFile.is_open()) {
-			myFile << newAccountDetails;
+			myFile << newAccountDetails << '\n';
 			myFile.close();
 			std::cout << "Your second name has been successfully changed.\n";
 			return 1;
@@ -481,7 +481,7 @@ bool Account::changeDetails() {
 		deleteAccount("DELETE ACCOUNT");
 		myFile.open("Accounts.txt", std::ios::app);
 		if (myFile.is_open()) {
-			myFile << newAccountDetails;
+			myFile << newAccountDetails << '\n';
 			myFile.close();
 			std::cout << "Your age has been successfully changed.\n";
 			return 1;
@@ -512,7 +512,7 @@ bool Account::changeDetails() {
 		deleteAccount("DELETE ACCOUNT");
 		myFile.open("Accounts.txt", std::ios::app);
 		if (myFile.is_open()) {
-			myFile << newAccountDetails;
+			myFile << newAccountDetails << '\n';
 			myFile.close();
 			std::cout << "Your postcode has been successfully changed.\n";
 			return 1;
@@ -545,7 +545,7 @@ bool Account::changeDetails() {
 				deleteAccount("DELETE ACCOUNT");
 				myFile.open("Accounts.txt", std::ios::app);
 				if (myFile.is_open()) {
-					myFile << newAccountDetails;
+					myFile << newAccountDetails << '\n';
 					myFile.close();
 					std::cout << "Your password has been successfully changed.\n";
 					return 1;
