@@ -42,5 +42,8 @@ public:
 	int64_t deposit(int64_t currentBalancePence);
 	int64_t withdraw(int64_t currentBalancePence);
 	std::string formatBalance(int64_t balancePence);
+
+private:
+	
 };
 

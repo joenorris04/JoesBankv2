@@ -126,7 +126,7 @@ bool Account::getUserDetails() {
 		for (int i = 0; i < inputAge.length(); i++) {
 			if (!isdigit(inputAge[i])) {
 				ageValidity = 0;
-				std::cout << "Your age should be written as a number.\n";
+				std::cout << "Your age should be written as a positive number.\n";
 				break;
 			}
 			else {
