@@ -19,8 +19,11 @@ public:
 	int lengthOfAge;
 	int startPosPostcode;
 	int lengthOfPostcode;
+	int startPosBalance;
+	int lengthOfBalance;
 	std::string accountNumber;
-	int64_t balance = 0;
+	int64_t balancePence = 0;
+	std::string balance;
 	uint32_t accountIndex;
 	uint32_t numberOfAccounts();
 	bool firstLogin = 1;
@@ -36,5 +39,8 @@ public:
 	int accountActions();
 	bool deleteAccount(std::string deleteConfirmation);
 	bool changeDetails();
+	int64_t deposit(int64_t currentBalancePence);
+	int64_t withdraw(int64_t currentBalancePence);
+	std::string formatBalance(int64_t balancePence);
 };
 

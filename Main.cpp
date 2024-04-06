@@ -27,10 +27,48 @@ int main() {
 					account.loadAccount(account.accountDetails);
 					int userChoice2 = account.accountActions();
 					if (userChoice2 == 1) { // deposit
-
+						std::string tempAccountDetails;
+						std::string newAccountDetails;
+						
+						account.balancePence = account.deposit(account.balancePence);
+						std::string strBalancePence = std::to_string(account.balancePence);
+						std::fstream myFile;
+						tempAccountDetails = account.accountDetails;
+						tempAccountDetails.erase(account.startPosBalance, account.lengthOfBalance);
+						newAccountDetails = tempAccountDetails.insert(account.startPosBalance, strBalancePence);
+						account.deleteAccount("DELETE ACCOUNT");
+						myFile.open("Accounts.txt", std::ios::app);
+						if (myFile.is_open()) {
+							myFile << newAccountDetails << '\n';
+							myFile.close();
+							std::cout << "Your new balance is: " << account.formatBalance(account.balancePence) << '\n';
+						}
+						else {
+							std::cout << "Failed to open file.\n";
+							returnToHomescreen = 1;
+						}
 					}
 					else if (userChoice2 == 2) { // withdraw
+						std::string tempAccountDetails;
+						std::string newAccountDetails;
 
+						account.balancePence = account.withdraw(account.balancePence);
+						std::string strBalancePence = std::to_string(account.balancePence);
+						std::fstream myFile;
+						tempAccountDetails = account.accountDetails;
+						tempAccountDetails.erase(account.startPosBalance, account.lengthOfBalance);
+						newAccountDetails = tempAccountDetails.insert(account.startPosBalance, strBalancePence);
+						account.deleteAccount("DELETE ACCOUNT");
+						myFile.open("Accounts.txt", std::ios::app);
+						if (myFile.is_open()) {
+							myFile << newAccountDetails << '\n';
+							myFile.close();
+							std::cout << "Your new balance is: " << account.formatBalance(account.balancePence) << '\n';
+						}
+						else {
+							std::cout << "Failed to open file.\n";
+							returnToHomescreen = 1;
+						}
 					}
 					else if (userChoice2 == 3) { // change details
 						if (account.changeDetails() != 1) {

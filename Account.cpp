@@ -189,7 +189,7 @@ void Account::saveUserDetails(std::string firstName, std::string secondName, int
 	std::fstream myFile;
 	myFile.open("Accounts.txt", std::ios::app);
 	if (myFile.is_open()) {
-		myFile << accountNumber << "    " << firstName << "    " << secondName << "    " << age << "    " << postcode << "    " << password << '\n';
+		myFile << accountNumber << "    " << firstName << "    " << secondName << "    " << age << "    " << postcode << "    " << balancePence << "    " << password << '\n';
 		myFile.close();
 	}
 }
@@ -275,6 +275,7 @@ bool Account::login() {
 
 void Account::loadAccount(std::string accountDetails) {
 	// password is already stored in memory
+	std::string stringBalance;
 	Account account;
 	accountNumber = accountDetails.substr(0, 19);
 
@@ -304,11 +305,19 @@ void Account::loadAccount(std::string accountDetails) {
 		lengthOfPostcode++;
 	}
 	postcode = accountDetails.substr(startPosPostcode, lengthOfPostcode);
-	
+
+	startPosBalance = startPosPostcode + lengthOfPostcode + 4;
+	lengthOfBalance = 0;
+	for (int i = startPosBalance; accountDetails[i] != ' '; i++) {
+		lengthOfBalance++;
+	}
+	stringBalance = accountDetails.substr(startPosBalance, lengthOfBalance);
+	balancePence = stoi(stringBalance);
 }
 
 int Account::accountActions() {
 	std::string x;
+	balance = formatBalance(balancePence);
 
 	if (firstLogin) {
 		std::cout << " _________________\n";
@@ -557,7 +566,175 @@ bool Account::changeDetails() {
 			}
 			else {
 				std::cout << "Your passwords do not match.\n";
+				return 0;
 			}
 		} while (newPassword1 != newPassword2);
 	}
+}
+
+int64_t Account::deposit(int64_t currentBalancePence) {
+	std::string deposit;
+	int64_t newBalance;
+	bool decimal = 0;
+	bool validDeposit = 1;
+
+	do {
+		std::cout << "Enter the amount you would like to deposit: ";
+		std::getline(std::cin >> std::ws, deposit);
+
+		if (isdigit(deposit[0])) {
+
+			for (int i = 0; deposit[i] != '\0'; i++) {
+				if (deposit[i] == '.') {
+					decimal = 1;
+					break;
+				}
+			}
+			if (decimal) {
+
+				int depositPoundsLength = 0;
+				int depositPenceLength = 0;
+				std::string depositPounds;
+				std::string depositPence;
+
+				for (int i = 0; deposit[i] != '.'; i++) {
+					depositPoundsLength++;
+				}
+
+				for (int i = depositPoundsLength + 1; deposit[i] != '\0'; i++) {
+					depositPenceLength++;
+				}
+
+				if (depositPenceLength == 2) {
+					depositPounds = deposit.substr(0, depositPoundsLength);
+					depositPence = deposit.substr(depositPoundsLength + 1);
+
+					int intDepositPence = stoi(depositPence);
+					int intDepositPounds = stoi(depositPounds);
+					int depositPoundsToPence = intDepositPounds * 100;
+					int64_t totalDepositPence = (int64_t)depositPoundsToPence + intDepositPence;
+
+					newBalance = balancePence + totalDepositPence;
+					std::cout << "Your money has been deposited.\n";
+					return newBalance;
+
+				}
+				else {
+					std::cout << "Please ensure your pence are entered in the format .XX\n";
+					validDeposit = 0;
+				}
+			}
+			else {
+				int64_t depositPence = int64_t(stoi(deposit) * 100);
+
+				newBalance = balancePence + depositPence;
+				std::cout << "Your money has been deposited.\n";
+				return newBalance;
+			}
+		}
+		else {
+			std::cout << "Please ensure you enter a number with two digits after the decimal if pence are being deposited.\n";
+			validDeposit = 0;
+		}
+	} while (validDeposit == 0);
+	
+}
+
+int64_t Account::withdraw(int64_t currentBalancePence) {
+	std::string withdraw;
+	int64_t newBalance;
+	bool decimal = 0;
+	bool validWithdraw = 1;
+
+	do {
+		std::cout << "Enter the amount you would like to withdraw: ";
+		std::getline(std::cin >> std::ws, withdraw);
+
+		if (isdigit(withdraw[0])) {
+
+			for (int i = 0; withdraw[i] != '\0'; i++) {
+				if (withdraw[i] == '.') {
+					decimal = 1;
+					break;
+				}
+			}
+			if (decimal) {
+
+				int withdrawPoundsLength = 0;
+				int withdrawPenceLength = 0;
+				std::string withdrawPounds;
+				std::string withdrawPence;
+
+				for (int i = 0; withdraw[i] != '.'; i++) {
+					withdrawPoundsLength++;
+				}
+
+				for (int i = withdrawPoundsLength + 1; withdraw[i] != '\0'; i++) {
+					withdrawPenceLength++;
+				}
+
+				if (withdrawPenceLength == 2) {
+					withdrawPounds = withdraw.substr(0, withdrawPoundsLength);
+					withdrawPence = withdraw.substr(withdrawPoundsLength + 1);
+
+					int intWithdrawPence = stoi(withdrawPence);
+					int intWithdrawPounds = stoi(withdrawPounds);
+					int withdrawPoundsToPence = intWithdrawPounds * 100;
+					int64_t totalWithdrawPence = (int64_t)withdrawPoundsToPence + intWithdrawPence;
+
+					newBalance = balancePence - totalWithdrawPence;
+					if (newBalance >= 0) {
+						std::cout << "Your money has been withdrawn.\n";
+						return newBalance;
+					}
+					else {
+						std::cout << "You do not have enough money in your account to withdraw this much.\n";
+						validWithdraw = 0;
+					}
+
+				}
+				else {
+					std::cout << "Please ensure your pence are entered in the format .XX\n";
+					validWithdraw = 0;
+				}
+			}
+			else {
+				int64_t depositPence = int64_t(stoi(withdraw) * 100);
+
+				newBalance = balancePence + depositPence;
+				std::cout << "Your money has been deposited.\n";
+				return newBalance;
+			}
+		}
+		else {
+			std::cout << "Please ensure you enter a number with two digits after the decimal if pence are being deposited.\n";
+			validWithdraw = 0;
+		}
+	} while (validWithdraw == 0);
+}
+
+std::string Account::formatBalance(int64_t balancePence) {
+	std::string penceTens;
+	std::string penceUnits;
+
+	std::string strBalance = std::to_string(balancePence);
+	int balanceLength = strBalance.length();
+
+	if (balanceLength == 1) {
+		penceUnits = strBalance[balanceLength-1];
+		strBalance = "0.0" + penceUnits;
+	}
+	else if (balanceLength == 2) {
+		penceTens = strBalance[balanceLength - 2];
+		penceUnits = strBalance[balanceLength - 1];
+		strBalance = "0." + penceTens + penceUnits;
+	}
+	else {
+		penceTens = strBalance[balanceLength - 2];
+		penceUnits = strBalance[balanceLength - 1];
+		strBalance.erase(balanceLength - 2, 2);
+		strBalance = strBalance + "." + penceTens + penceUnits;
+	}
+
+	return strBalance;
 }
