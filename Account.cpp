@@ -10,6 +10,7 @@ uint32_t Account::numberOfAccounts() {
 	uint32_t numberOfAccounts = 0;
 	std::string account;
 	std::fstream myFile;
+
 	myFile.open("Accounts.txt", std::ios::in);
 	while (std::getline(myFile, account)) {
 		numberOfAccounts++;
@@ -20,6 +21,7 @@ uint32_t Account::numberOfAccounts() {
 
 bool Account::checkAccountNumberValidity(std::string inputAccountNumber) {
 	int accountNumberLength = 0;
+
 	for (int i = 0; inputAccountNumber[i] != '\0'; i++) {
 		accountNumberLength++;
 	}
@@ -32,7 +34,6 @@ bool Account::checkAccountNumberValidity(std::string inputAccountNumber) {
 }
 
 std::string Account::generateAccountNumber() { // add checks to ensure the number hasnt been used before - 16 digit
-
 	srand((unsigned int)time(NULL));
 
 	int randomNumberBase = (rand() % 9000 + 1000);
@@ -54,9 +55,12 @@ std::string Account::generateAccountNumber() { // add checks to ensure the numbe
 
 bool Account::checkPasswordValidity(std::string inputPassword) {
 	int passwordLength = inputPassword.length(); // size_t to unsigned int warning needs fix
+
 	if (passwordLength > 7) {
 		for (int i = 0; i < passwordLength; i++) {
+
 			bool x = isdigit(inputPassword[i]);
+
 			if (x != 0) {
 				for (int j = 0; j < passwordLength; j++) {
 					bool y = isspace(inputPassword[j]);
@@ -92,6 +96,7 @@ bool Account::checkFirstNameValidity(std::string inputName) {
 bool Account::checkSecondNameValidity(std::string inputName) {
 	for (int i = 0; inputName[i] != '\0'; i++) {
 		bool x = isspace(inputName[i]);
+
 		if (x == 1) {
 			std::cout << "Ensure you only enter your second name with no spaces.\n";
 			return 0;
@@ -113,9 +118,11 @@ bool Account::getUserDetails() {
 	bool ageValidity = 1;
 	bool firstNameValidity;
 	bool secondNameValidity;
+
 	do {
 		std::cout << "Please enter your age: ";
 		std::getline(std::cin >> std::ws, inputAge);
+
 		for (int i = 0; i < inputAge.length(); i++) {
 			if (inputAge[i] == ' ') {
 				inputAge.erase(i, 1);
@@ -134,7 +141,9 @@ bool Account::getUserDetails() {
 			}
 		}
 	} while (ageValidity == 0);
+
 	intInputAge = stoi(inputAge);
+
 	if (intInputAge < 18) {
 		std::cout << "You are not old enough to create an account!\n";
 		return 0;
@@ -145,6 +154,7 @@ bool Account::getUserDetails() {
 			std::getline(std::cin >> std::ws, inputFirstName);
 			firstNameValidity = checkFirstNameValidity(inputFirstName);
 		} while (firstNameValidity == 0);
+
 		do {
 			std::cout << "Please enter your second name: ";
 			std::getline(std::cin >> std::ws, inputSecondName);
@@ -153,6 +163,7 @@ bool Account::getUserDetails() {
 
 		std::cout << "Please enter your postcode: ";
 		std::getline(std::cin >> std::ws, inputPostcode);
+
 		for (int i = 0; i < inputPostcode.length(); i++) {
 			if (inputPostcode[i] == ' ') {
 				inputPostcode.erase(i, 1);
@@ -165,6 +176,7 @@ bool Account::getUserDetails() {
 				std::getline(std::cin >> std::ws, inputPassword1);
 				passwordValidity = checkPasswordValidity(inputPassword1);
 			} while (passwordValidity == 0);
+
 			std::cout << "Please confirm your password: ";
 			std::getline(std::cin >> std::ws, inputPassword2);
 			if (inputPassword1 == inputPassword2) {
@@ -174,11 +186,13 @@ bool Account::getUserDetails() {
 				std::cout << "Your passwords do not match.\n";
 			}
 		} while (inputPassword1 != inputPassword2);
+
 		firstName = inputFirstName;
 		secondName = inputSecondName;
 		age = intInputAge;
 		postcode = inputPostcode;
 		accountNumber = generateAccountNumber();
+
 		std::cout << "Below is your new account number. Please do not forget this!\n";
 		std::cout << accountNumber << '\n';
 		return 1;
@@ -188,6 +202,7 @@ bool Account::getUserDetails() {
 void Account::saveUserDetails(std::string firstName, std::string secondName, int age, std::string postcode,std::string password, std::string accountNumber) {
 	std::fstream myFile;
 	myFile.open("Accounts.txt", std::ios::app);
+
 	if (myFile.is_open()) {
 		myFile << accountNumber << "    " << firstName << "    " << secondName << "    " << age << "    " << postcode << "    " << balancePence << "    " << password << '\n';
 		myFile.close();
@@ -202,13 +217,16 @@ bool Account::login() {
 	std::string inputAccountNumber;
 	bool accountNumberValidity = false;
 	Account account;
+
 	do {
 		std::cout << "Please enter your account number in the format XXXX-XXXX-XXXX-XXXX\n";
 		std::getline(std::cin >> std::ws, inputAccountNumber);
 		accountNumberValidity = account.checkAccountNumberValidity(inputAccountNumber);
 	} while (accountNumberValidity == false);
+
 		std::fstream myFile;
 		myFile.open("Accounts.txt", std::ios::in);
+
 		if (myFile.is_open()) {
 			uint32_t numberOfAccounts = account.numberOfAccounts();
 			do {
@@ -223,8 +241,10 @@ bool Account::login() {
 					}
 
 				}
+
 				accountsSearched++;
 				accountIndex = accountsSearched;
+
 				if (matchingChars != 19) {
 					if (accountsSearched == numberOfAccounts) {
 						std::cout << "Your account number was not recognised.\n";
@@ -236,9 +256,11 @@ bool Account::login() {
 			} while (matchingChars < 19);
 
 			myFile.close();
+
 			if (matchingChars == 19) {
 				lengthOfAccountDetails = accountDetails.length();
 				posOfAccountDetails = lengthOfAccountDetails - 1;
+
 				do {
 					posOfAccountDetails--;
 					lengthOfPassword++;
@@ -275,6 +297,7 @@ bool Account::login() {
 
 void Account::loadAccount(std::string accountDetails) {
 	// password is already stored in memory
+
 	std::string stringBalance;
 	Account account;
 	accountNumber = accountDetails.substr(0, 19);
@@ -353,11 +376,13 @@ int Account::accountActions() {
 
 bool Account::deleteAccount(std::string deleteConfirmation) {
 	Account account;
+
 	if (deleteConfirmation == "DELETE ACCOUNT") {
 		std::string line[MAX_ACCOUNTS];//declared as 100 at top of file
 		std::string deleteAccount;
 		uint32_t numberOfAccounts = account.numberOfAccounts();
 		std::fstream myFile;
+
 		myFile.open("Accounts.txt", std::ios::in);
 		if (myFile.is_open()) {
 			for (int i = 1; i <= numberOfAccounts; i++) {
@@ -365,6 +390,7 @@ bool Account::deleteAccount(std::string deleteConfirmation) {
 			}
 			myFile.close();
 		}
+
 		myFile.open("Accounts.txt", std::ios::out);
 		if (myFile.is_open()) {
 			for (int i = 1; i <= numberOfAccounts; i++) {
@@ -386,6 +412,7 @@ bool Account::deleteAccount(std::string deleteConfirmation) {
 
 bool Account::changeDetails() {
 	std::string detailToChange;
+
 	std::cout << "Please choose what you would like to change from the options below:\n";
 	do {
 		std::cout << "(1) First name\n";
@@ -394,26 +421,32 @@ bool Account::changeDetails() {
 		std::cout << "(4) Postcode\n";
 		std::cout << "(5) Password\n";
 		std::getline(std::cin >> std::ws, detailToChange);
+
 		if (detailToChange != "1" && detailToChange != "2" && detailToChange != "3" && detailToChange != "4" && detailToChange != "5") {
 			std::cout << "Please choose an option by entering one of the numbers shown in brackets.\n";
 		}
 	} while (detailToChange != "1" && detailToChange != "2" && detailToChange != "3" && detailToChange != "4" && detailToChange != "5");
+
 	if (detailToChange == "1") { // change first name
 		std::string newFirstName;
 		std::string newAccountDetails;
 		std::string tempAccountDetails;
 		bool newFirstNameValidity;
 		std::fstream myFile;
+
 		do {
 			std::cout << "Please enter your new first name: ";
 			std::getline(std::cin >> std::ws, newFirstName);
 			newFirstNameValidity = checkFirstNameValidity(newFirstName);
 		} while (newFirstNameValidity == 0);
+
 		tempAccountDetails = accountDetails;
 		tempAccountDetails.erase(startPosFirstName, lengthOfFirstName);
 		newAccountDetails = tempAccountDetails.insert(startPosFirstName, newFirstName);
+
 		deleteAccount("DELETE ACCOUNT");
 		myFile.open("Accounts.txt", std::ios::app);
+
 		if (myFile.is_open()) {
 			myFile << newAccountDetails << '\n';
 			myFile.close();
@@ -426,21 +459,26 @@ bool Account::changeDetails() {
 		}
 	}
 	else if (detailToChange == "2") { // change second name
+
 		std::string newSecondName;
 		std::string newAccountDetails;
 		std::string tempAccountDetails;
 		bool newSecondNameValidity;
 		std::fstream myFile;
+
 		do {
 			std::cout << "Please enter your new second name: ";
 			std::getline(std::cin >> std::ws, newSecondName);
 			newSecondNameValidity = checkSecondNameValidity(newSecondName);
 		} while (newSecondNameValidity == 0);
+
 		tempAccountDetails = accountDetails;
 		tempAccountDetails.erase(startPosSecondName, lengthOfSecondName);
 		newAccountDetails = tempAccountDetails.insert(startPosSecondName, newSecondName);
+
 		deleteAccount("DELETE ACCOUNT");
 		myFile.open("Accounts.txt", std::ios::app);
+
 		if (myFile.is_open()) {
 			myFile << newAccountDetails << '\n';
 			myFile.close();
@@ -454,11 +492,13 @@ bool Account::changeDetails() {
 
 	}
 	else if (detailToChange == "3") { // change age
+
 		std::string newAge;
 		std::string newAccountDetails;
 		std::string tempAccountDetails;
 		bool newAgeValidity = 0;
 		std::fstream myFile;
+
 		do {
 			std::cout << "Please enter your new age: ";
 			std::getline(std::cin >> std::ws, newAge);
@@ -467,7 +507,6 @@ bool Account::changeDetails() {
 					newAge.erase(i, 1);
 					i--;
 				}
-
 			}
 			for (int i = 0; i < newAge.length(); i++) {
 				if (!isdigit(newAge[i])) {
@@ -479,15 +518,18 @@ bool Account::changeDetails() {
 				}
 			}
 		} while (newAgeValidity == 0);
+
 		int intNewAge = stoi(newAge);
 		if (intNewAge < 18) {
 			std::cout << "This is an invalid age.\n";
 			return 0;
 		}
+
 		tempAccountDetails = accountDetails;
 		tempAccountDetails.erase(startPosAge, lengthOfAge);
 		newAccountDetails = tempAccountDetails.insert(startPosAge, newAge);
 		deleteAccount("DELETE ACCOUNT");
+
 		myFile.open("Accounts.txt", std::ios::app);
 		if (myFile.is_open()) {
 			myFile << newAccountDetails << '\n';
@@ -502,23 +544,27 @@ bool Account::changeDetails() {
 
 	}
 	else if (detailToChange == "4") { // change postcode
+
 		std::string newPostcode;
 		std::string newAccountDetails;
 		std::string tempAccountDetails;
 		bool newPostcodeValidity;
 		std::fstream myFile;
+
 		std::cout << "Please enter your new postcode: ";
 		std::getline(std::cin >> std::ws, newPostcode);
+
 		for (int i = 0; i < newPostcode.length(); i++) {
 			if (newPostcode[i] == ' ') {
 				newPostcode.erase(i, 1);
 			}
-
 		}
+
 		tempAccountDetails = accountDetails;
 		tempAccountDetails.erase(startPosPostcode, lengthOfPostcode);
 		newAccountDetails = tempAccountDetails.insert(startPosPostcode, newPostcode);
 		deleteAccount("DELETE ACCOUNT");
+
 		myFile.open("Accounts.txt", std::ios::app);
 		if (myFile.is_open()) {
 			myFile << newAccountDetails << '\n';
@@ -532,26 +578,31 @@ bool Account::changeDetails() {
 		}
 	}
 	else { // change password
+
 		std::fstream myFile;
 		std::string newPassword1;
 		std::string newPassword2;
 		bool passwordValidity;
 		std::string newAccountDetails;
 		std::string tempAccountDetails;
+
 		do {
 			do {
 				std::cout << "Please enter a new password: ";
 				std::getline(std::cin >> std::ws, newPassword1);
 				passwordValidity = checkPasswordValidity(newPassword1);
 			} while (passwordValidity == 0);
+
 			std::cout << "Please confirm your new password: ";
 			std::getline(std::cin >> std::ws, newPassword2);
+
 			if (newPassword1 == newPassword2) {
 				int startPosPassword = lengthOfAccountDetails - lengthOfPassword;
 				tempAccountDetails = accountDetails;
 				tempAccountDetails.erase(startPosPassword, lengthOfPassword);
 				newAccountDetails = tempAccountDetails.insert(startPosPassword, newPassword1);
 				deleteAccount("DELETE ACCOUNT");
+
 				myFile.open("Accounts.txt", std::ios::app);
 				if (myFile.is_open()) {
 					myFile << newAccountDetails << '\n';
